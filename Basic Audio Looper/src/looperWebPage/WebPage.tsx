@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, ChangeEvent } from "react";
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { fetchFile, toBlobURL } from '@ffmpeg/util';
 import { ClipLoader } from "react-spinners";
+import "./WebPage.css"
 
 const CORE_VERSION = '0.12.6';
 const CORE_BASE_URL = `https://unpkg.com/@ffmpeg/core@${CORE_VERSION}/dist/esm`;
@@ -291,13 +292,13 @@ const WebPage = ()=>{
 
   if (status==="loading"){
     return(
-      <div>
+      <div className="appDiv">
         <ClipLoader size={100} color="#82C8E5" loading={status==="loading"}/>
       </div>
     )
   }else if(status==="done"){
     return(
-      <div>
+      <div className="appDiv">
         <h3>Operation Complete!</h3>
         <div>
           <button className="backBtn" onClick={goBack}>
@@ -317,7 +318,7 @@ const WebPage = ()=>{
       </div>
     )
   }else if (status==="error"){
-    <div>
+    <div className="appDiv">
         <h3>Error: ${error}</h3>
         <div>
           <button className="errBack" onClick={goBack}>
@@ -338,105 +339,111 @@ const WebPage = ()=>{
 
 
   return(
-    <div>
-      <div onDrop={handleFileDrop} onDragEnter={handleDivDragEnter}
-        onDragLeave={handleDivDragLeave} 
-        onDragOver={handleDivDragOver}
-        onClick={handleDivClick}
-        className={`dragDropDox ${isDragging? "dragStyle": "noDragStyle"}`}
-      >
-        <p> Drag and Drop or Click Here to Upload the Audio File</p>
-        <input type="file" 
-          ref={fileInputRef} 
-          onChange={handleFileChange}
-          multiple={false} 
-          accept={"audio/*"}/>
+    <div className="appDiv">
+      <div id="fileUploadSection">
+        <div onDrop={handleFileDrop} onDragEnter={handleDivDragEnter}
+          onDragLeave={handleDivDragLeave} 
+          onDragOver={handleDivDragOver}
+          onClick={handleDivClick}
+          className={`dragDropDox ${isDragging? "dragStyle": "noDragStyle"}`}
+        >
+          <p style={{height:"1rem"}}> Drag and Drop or Click Here to Upload the Audio File</p>
+          <input type="file" 
+            ref={fileInputRef} 
+            onChange={handleFileChange}
+            multiple={false} 
+            accept={"audio/*"}
+            style={{display:"none"}}/>
+        </div>
+        <div>
+          <p style={{fontSize:"0.75rem"}}>
+            Current Uploaded File: {currFile?currFile.name:"None"}
+          </p>
+        </div>
       </div>
-      {currFile?
-        (<div>
-          <p></p>
-        </div>):null}
-      <div>
-        <p>
-          Current Uploaded File: {currFile?currFile.name:"None"}
-        </p>
-      </div>
-
-      <div>
-        <label htmlFor="max-time">
-          <input
-            type="radio"
-            id="max-time"
-            name="option"
-            value="Max Time"
-            checked={option === "Max Time"}
-            onChange={(e) => setOption(e.target.value)}
-          />
-          Max Time
-        </label>
-        <label htmlFor="min-time">
-          <input
-            type="radio"
-            id="min-time"
-            name="option"
-            value="Min Time"
-            checked={option === "Min Time"}
-            onChange={(e) => setOption(e.target.value)}
-          />
-          Min Time
-        </label>
-      </div>
-      <div>
-        <label>
-          Hour(Max 12)
-          <input id="Hour" type="number" min="0" max="12" value={hourVal}
-            onChange={(e)=>{
-              if(Number(e.target.value) > 12){
-                setHourVal(12);
-              }else if(Number(e.target.value)>=0){
-                setHourVal(Number(e.target.value));
-              }else{
-                setHourVal(0);
-              }
-            }}/>
-        </label>
-        <label>
-          Minutes
-          <input 
-            id="Minutes" 
-            type="number" 
-            min="0" 
-            max="59" 
-            value={minuteVal}
-            onChange={(e)=>{
-              if(Number(e.target.value) > 59){
-                setMinuteVal(59);
-              }else if(Number(e.target.value)>=0){
-                setMinuteVal(Number(e.target.value));
-              }else{
-                setMinuteVal(0);
-              }
-            }}/>
-        </label>
-        <label>
-          Seconds
-          <input 
-            id="Seconds" 
-            type="number" 
-            min="0" 
-            max="59" 
-            value={secVal}
-            onChange={(e)=>{
-              if(Number(e.target.value) > 59){
-                setSecVal(59);
-              }else if(Number(e.target.value)>=0){
-                setSecVal(Number(e.target.value));
-              }else{
-                setSecVal(0);
-              }
-            }}/>
-        </label>
-      </div>
+      
+      <section id="optionSelection">
+        <h3 style={{margin:"0"}}>Looper Settings</h3>
+        <div>
+          <p>Duration Target Type</p>
+          <label htmlFor="max-time">
+            <input
+              type="radio"
+              id="max-time"
+              name="option"
+              value="Max Time"
+              checked={option === "Max Time"}
+              onChange={(e) => setOption(e.target.value)}
+            />
+            Max Time
+          </label>
+          <label htmlFor="min-time">
+            <input
+              type="radio"
+              id="min-time"
+              name="option"
+              value="Min Time"
+              checked={option === "Min Time"}
+              onChange={(e) => setOption(e.target.value)}
+            />
+            Min Time
+          </label>
+        </div>
+        <div>
+          <p>Looped Audio Duration</p>
+          <label>
+            Hour(Max 12)
+            <input id="Hour" type="number" min="0" max="12" value={hourVal}
+              onChange={(e)=>{
+                if(Number(e.target.value) > 12){
+                  setHourVal(12);
+                }else if(Number(e.target.value)>=0){
+                  setHourVal(Number(e.target.value));
+                }else{
+                  setHourVal(0);
+                }
+              }}/>
+          </label>
+          <label>
+            Minutes
+            <input 
+              id="Minutes" 
+              type="number" 
+              min="0" 
+              max="59" 
+              value={minuteVal}
+              onChange={(e)=>{
+                if(Number(e.target.value) > 59){
+                  setMinuteVal(59);
+                }else if(Number(e.target.value)>=0){
+                  setMinuteVal(Number(e.target.value));
+                }else{
+                  setMinuteVal(0);
+                }
+              }}/>
+          </label>
+          <label>
+            Seconds
+            <input 
+              id="Seconds" 
+              type="number" 
+              min="0" 
+              max="59" 
+              value={secVal}
+              onChange={(e)=>{
+                if(Number(e.target.value) > 59){
+                  setSecVal(59);
+                }else if(Number(e.target.value)>=0){
+                  setSecVal(Number(e.target.value));
+                }else{
+                  setSecVal(0);
+                }
+              }}/>
+          </label>
+        </div>
+        
+      </section>
+      
 
       {error?(<p className="errorText">Error: ${error}</p>):(<></>)}
 
