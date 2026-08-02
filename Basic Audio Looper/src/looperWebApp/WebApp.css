@@ -1,0 +1,54 @@
+.appDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:1rem;
+}
+
+
+
+.dragDropDox{
+    border: 2px dashed;
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    width: 25rem;
+    height: 10rem;
+}
+
+.durationInput{
+    width:3rem;
+}
+
+.durationInputPart{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0.375rem;
+}
+
+.durationLabel{
+    width: 3rem;
+    line-height: normal;
+    margin-bottom: 0.25rem;
+}
+
+.durationSettings{
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    gap: 0.375rem;
+}
+
+.errorText{
+    color:#ef0000;
+}
+
+
+
+#optionSelection{
+    display: flex;
+    flex-direction: column;
+    gap:0.5rem;
+}
+

@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, ChangeEvent } from "react";
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { fetchFile, toBlobURL } from '@ffmpeg/util';
 import { ClipLoader } from "react-spinners";
-import "./WebPage.css"
+import "./WebApp.css"
 
 const CORE_VERSION = '0.12.6';
 const CORE_BASE_URL = `https://unpkg.com/@ffmpeg/core@${CORE_VERSION}/dist/esm`;
@@ -21,7 +21,7 @@ const mimeToExt: Record<string, string> = {
   'audio/webm': 'webm',
 };
 
-const WebPage = ()=>{
+const WebApp = ()=>{
   const [option, setOption] = useState("Min Time");
   const [hourVal, setHourVal] = useState(0);
   const [minuteVal, setMinuteVal] = useState(0);
@@ -391,55 +391,75 @@ const WebPage = ()=>{
         </div>
         <div>
           <p>Looped Audio Duration</p>
-          <label>
-            Hour(Max 12)
-            <input id="Hour" type="number" min="0" max="12" value={hourVal}
-              onChange={(e)=>{
-                if(Number(e.target.value) > 12){
-                  setHourVal(12);
-                }else if(Number(e.target.value)>=0){
-                  setHourVal(Number(e.target.value));
-                }else{
-                  setHourVal(0);
-                }
-              }}/>
-          </label>
-          <label>
-            Minutes
-            <input 
-              id="Minutes" 
-              type="number" 
-              min="0" 
-              max="59" 
-              value={minuteVal}
-              onChange={(e)=>{
-                if(Number(e.target.value) > 59){
-                  setMinuteVal(59);
-                }else if(Number(e.target.value)>=0){
-                  setMinuteVal(Number(e.target.value));
-                }else{
-                  setMinuteVal(0);
-                }
-              }}/>
-          </label>
-          <label>
-            Seconds
-            <input 
-              id="Seconds" 
-              type="number" 
-              min="0" 
-              max="59" 
-              value={secVal}
-              onChange={(e)=>{
-                if(Number(e.target.value) > 59){
-                  setSecVal(59);
-                }else if(Number(e.target.value)>=0){
-                  setSecVal(Number(e.target.value));
-                }else{
-                  setSecVal(0);
-                }
-              }}/>
-          </label>
+
+          <div className="durationSettings">
+            
+            <div className="durationInputPart">
+              <label htmlFor="Hour" className="durationLabel">Hours</label>
+              <input id="Hour" type="number" 
+                min="0" 
+                max="12" 
+                value={hourVal}
+                className="durationInput" 
+                onChange={(e)=>{
+                  if(Number(e.target.value) >= 12){
+                    setHourVal(12);
+                    setMinuteVal(0);
+                    setSecVal(0);
+                  }else if(Number(e.target.value)>=0){
+                    setHourVal(Number(e.target.value));
+                  }else{
+                    setHourVal(0);
+                  }
+                }}/>
+            </div>
+            
+            <div className="durationInputPart">
+              <label htmlFor="Minutes" className="durationLabel">Minutes</label>
+              <input 
+                id="Minutes" 
+                type="number" 
+                min="0" 
+                max="59" 
+                value={minuteVal}
+                className="durationInput"
+                onChange={(e)=>{
+                  if (hourVal >= 12){
+                    setMinuteVal(0);
+                  }else if(Number(e.target.value) > 59){
+                    setMinuteVal(59);
+                  }else if(Number(e.target.value)>=0){
+                    setMinuteVal(Number(e.target.value));
+                  }else{
+                    setMinuteVal(0);
+                  }
+                }}/>
+            </div>
+
+            <div className="durationInputPart">
+              <label htmlFor="Seconds" className="durationLabel">Seconds</label>
+              <input 
+                id="Seconds" 
+                type="number" 
+                min="0" 
+                max="59" 
+                className="durationInput"
+                value={secVal}
+                onChange={(e)=>{
+                  if(hourVal>=12){
+                    setSecVal(0);
+                  }else if(Number(e.target.value) > 59){
+                    setSecVal(59);
+                  }else if(Number(e.target.value)>=0){
+                    setSecVal(Number(e.target.value));
+                  }else{
+                    setSecVal(0);
+                  }
+                }}/>
+            </div>
+
+          </div>
+          <p style={{fontSize:"0.675rem"}}>Max Duration: 12 hours</p>
         </div>
         
       </section>
@@ -457,4 +477,4 @@ const WebPage = ()=>{
   )
 }
 
-export default WebPage;
+export default WebApp;

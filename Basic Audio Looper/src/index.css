@@ -1,5 +1,5 @@
 :root {
-  --text: #6b6375;
+  --text: #08060d;
   --text-h: #08060d;
   --bg: #fff;
   --border: #e5e4e7;
@@ -25,6 +25,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  --app-bg: #F7F5F2;
+
   @media (max-width: 1024px) {
     font-size: 16px;
   }
@@ -43,6 +45,7 @@
     --social-bg: rgba(47, 48, 58, 0.5);
     --shadow:
       rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+    --app-bg: #242017;;
   }
 
   #social .button-icon {
@@ -55,11 +58,11 @@
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  align-items: center;
 }
 
 body {

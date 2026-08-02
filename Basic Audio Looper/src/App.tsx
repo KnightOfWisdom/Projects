@@ -3,17 +3,15 @@
 // import viteLogo from './assets/vite.svg'
 // import heroImg from './assets/hero.png'
 import './App.css'
-import WebPage from './looperWebPage/WebPage'
+import WebApp from './looperWebApp/WebApp'
 
 function App() {
 
   return (
-    <>
-      <div>
-        <h2>Audio File Looper</h2>
-        <WebPage/>
-      </div>
-    </>
+    <section className='appSection'>
+      <h2 style={{marginBottom:"1.5rem"}}>Audio File Looper</h2>
+      <WebApp/>
+    </section>
   )
 }
 
