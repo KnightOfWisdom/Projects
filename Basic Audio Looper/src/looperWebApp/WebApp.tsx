@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, ChangeEvent } from "react";
+import { useState,  useRef } from "react";
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { fetchFile, toBlobURL } from '@ffmpeg/util';
 import { ClipLoader } from "react-spinners";
@@ -31,7 +31,6 @@ const WebApp = ()=>{
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState('idle'); // idle | loading | done | error
-  const [progress, setProgress] = useState(0);
   const ffmpegRef = useRef<FFmpeg | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -45,12 +44,9 @@ const WebApp = ()=>{
     if (ffmpegRef.current) return ffmpegRef.current;
 
     const ffmpeg = new FFmpeg();
-    ffmpeg.on('progress', ({ progress }) => {
-      setProgress(Math.round(progress * 100));
-    });
-    ffmpeg.on('log', ({ message }) => {
-      console.log('[ffmpeg]', message);
-    });
+    // ffmpeg.on('log', ({ message }) => {
+    //   console.log('[ffmpeg]', message);
+    // });
 
     setStatus('loading');
     await ffmpeg.load({
@@ -247,13 +243,13 @@ const WebApp = ()=>{
 
 
   // Drag and Drop
-  const handleDivDragEnter = (e) => {
+  const handleDivDragEnter = (e:React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     dragDepth.current += 1;
     setIsDragging(true);
   };
  
-  const handleDivDragLeave = (e) => {
+  const handleDivDragLeave = (e:React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     dragDepth.current -= 1;
     if (dragDepth.current <= 0) {
@@ -262,7 +258,7 @@ const WebApp = ()=>{
     }
   };
  
-  const handleDivDragOver = (e) => e.preventDefault();
+  const handleDivDragOver = (e:React.DragEvent<HTMLDivElement>) => e.preventDefault();
 
 
   //const handleDivClick
@@ -293,27 +289,34 @@ const WebApp = ()=>{
   if (status==="loading"){
     return(
       <div className="appDiv">
-        <ClipLoader size={100} color="#82C8E5" loading={status==="loading"}/>
+        <ClipLoader size={100} color="#82C8E5" loading={status==="loading"}/>  
       </div>
     )
   }else if(status==="done"){
     return(
       <div className="appDiv">
         <h3>Operation Complete!</h3>
-        <div>
+
+        <div className="downloadBtnRow">
           <button className="backBtn" onClick={goBack}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-arrow-left-icon lucide-arrow-left">
               <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
             </svg>
           </button>
-          {/*Handle unexpected instance of status equal to done but the file and url is not proper*/}
-        </div>
+          
           {(downloadUrl !== null && currFile) ?
-            (<button onClick={()=>triggerDownload(downloadUrl, currFile?.name)}>Download Looped Audio</button>):
-            (<div>
-              <h3>Unexpected Error, Try Again!</h3> 
-            </div>)
+            (<button className="downloadBtn" 
+              onClick={()=>triggerDownload(downloadUrl, currFile?.name)}>
+                Download Looped Audio
+            </button>):null
           }
+        </div>
+
+        {/*Handle unexpected instance of status equal to done but the file and url is not proper*/}
+        {(downloadUrl === null || !currFile)?
+          (<div>
+            <h3>Unexpected Error, Try Again!</h3> 
+          </div>):null}
           
       </div>
     )
@@ -467,8 +470,8 @@ const WebApp = ()=>{
 
       {error?(<p className="errorText">Error: ${error}</p>):(<></>)}
 
-      <button disabled={!currFile} onClick={()=>handleLoop()}>
-        Start Looping
+      <button className="submitBtn" disabled={!currFile} onClick={()=>handleLoop()}>
+        <p style={{fontSize:"1rem"}}><b>Start Looping</b></p>
       </button>
 
       

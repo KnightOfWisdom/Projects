@@ -9,7 +9,7 @@ function App() {
 
   return (
     <section className='appSection'>
-      <h2 style={{marginBottom:"1.5rem"}}>Audio File Looper</h2>
+      <h2>Audio File Looper</h2>
       <WebApp/>
     </section>
   )

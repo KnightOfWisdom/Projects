@@ -5,7 +5,12 @@
     gap:1rem;
 }
 
-
+.backBtn{
+    height: 3rem;
+    width: 3rem;
+    border: hidden 0;
+    border-radius: 0.5rem;
+}
 
 .dragDropDox{
     border: 2px dashed;
@@ -14,6 +19,24 @@
     align-items:center;
     width: 25rem;
     height: 10rem;
+}
+
+.downloadBtn{
+    width: 10rem;
+    height: 3rem;
+    border-style: hidden;
+    border-radius: 0.5rem;
+    background-color: var(--btn-red);
+}
+
+.downloadBtn:hover{
+    background-color: var(--btn-red-hover);
+}
+
+.downloadBtnRow{
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
 }
 
 .durationInput{
@@ -42,6 +65,30 @@
 
 .errorText{
     color:#ef0000;
+}
+
+.progressBarOuter{
+    height: 1rem;
+    background: #e4dfd6;
+    border-style: hidden;
+    border-radius: 0.25rem; 
+    overflow: "hidden";
+    width: 20rem;
+}
+
+.progressBarFill{
+    background: #4A4A4A;
+    border-style: hidden;
+    border-radius: 0.25rem;
+    transition: width 0.1s ease;
+    height: 100%
+}
+
+.submitBtn{
+    width: 10rem;
+    height: 3rem;
+    border-style: hidden;
+    border-radius: 0.5rem;
 }
 
 
